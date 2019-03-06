@@ -14,7 +14,7 @@ public class Question {
         return mTextResId;
     }
 
-    public void setTextRedId(int textResId) {
+    public void setTextResId(int textResId) {
         mTextResId = textResId;
     }
 
