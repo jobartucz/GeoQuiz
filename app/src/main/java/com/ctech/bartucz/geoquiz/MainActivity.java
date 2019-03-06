@@ -36,27 +36,20 @@ public class MainActivity extends AppCompatActivity {
 
         // Get a reference to the Question TextView and set its text to the question at the current index
         mQuestionTextView = findViewById(R.id.question_text_view);
-        int questionResourceId = mQuestionBank[mCurrentIndex].getTextResId();
-        mQuestionTextView.setText(questionResourceId);
 
-
-        mTrueButton = (Button) findViewById(R.id.true_button);
+        mTrueButton = findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,
-                        R.string.correct_toast,
-                        Toast.LENGTH_SHORT).show();
+                checkAnswer(true);
             }
         });
 
-        mFalseButton = (Button) findViewById(R.id.false_button);
+        mFalseButton = findViewById(R.id.false_button);
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,
-                        R.string.incorrect_toast,
-                        Toast.LENGTH_SHORT).show();
+                checkAnswer(false);
             }
         });
 
@@ -66,11 +59,35 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-                int newQuestionResourceId = mQuestionBank[mCurrentIndex].getTextResId();
-                mQuestionTextView.setText(newQuestionResourceId);
+                updateQuestion();
             }
 
         });
 
+        updateQuestion();
+    } // end of onCreate
+
+    // encapsulate the update question code so we don't have to copy and paste it:
+    private void updateQuestion() {
+        int questionResourceId = mQuestionBank[mCurrentIndex].getTextResId();
+        mQuestionTextView.setText(questionResourceId);
     }
+
+    // check whether the button clicked matches the answer in the resource
+    private void checkAnswer(boolean userPressedTrue) {
+
+        boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+
+        int messageResourceId = 0;
+
+        if (userPressedTrue == answerIsTrue) {
+            messageResourceId = R.string.correct_toast;
+        } else {
+            messageResourceId = R.string.incorrect_toast;
+        }
+
+        // you can make fancier Toast here if you want (from previous challenge)
+        Toast.makeText(this, messageResourceId, Toast.LENGTH_SHORT).show();
+    }
+
 }
