@@ -2,11 +2,27 @@ package com.ctech.bartucz.geoquiz;
 
 public class Question {
 
-    private int mTextRedId;
+    private int mTextResId;
     private boolean mAnswerTrue;
 
     public Question(int textResId, boolean answerTrue) {
-        mTextRedId = textResId;
+        mTextResId = textResId;
+        mAnswerTrue = answerTrue;
+    }
+
+    public int getTextResId() {
+        return mTextResId;
+    }
+
+    public void setTextRedId(int textResId) {
+        mTextResId = textResId;
+    }
+
+    public boolean isAnswerTrue() {
+        return mAnswerTrue;
+    }
+
+    public void setAnswerTrue(boolean answerTrue) {
         mAnswerTrue = answerTrue;
     }
 }
