@@ -2,6 +2,7 @@ package com.ctech.bartucz.geoquiz;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     private Button mTrueButton;
     private Button mFalseButton;
@@ -34,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "onCreate(Bundle) has been called!");
+
         setContentView(R.layout.activity_main);
 
         // Get a reference to the Question TextView and set its text to the question at the current index
@@ -68,6 +74,36 @@ public class MainActivity extends AppCompatActivity {
 
         updateQuestion();
     } // end of onCreate
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart has been called!");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume has been called!");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause has been called!");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop has been called!");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy has been called!");
+    }
 
     // encapsulate the update question code so we don't have to copy and paste it:
     private void updateQuestion() {
