@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
+                // update the current index, but stay within the length of the array
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 updateQuestion();
             }
@@ -78,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
+                // if we're at the first question, go to the last question
                 if (mCurrentIndex == 0) {
                     mCurrentIndex = mQuestionBank.length - 1;
                 } else {
