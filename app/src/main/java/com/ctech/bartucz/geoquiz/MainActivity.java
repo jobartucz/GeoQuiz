@@ -12,6 +12,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private static final String KEY_INDEX = "index";
 
     private Button mTrueButton;
     private Button mFalseButton;
@@ -41,7 +42,14 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate(Bundle) has been called!");
 
+        // get the activity_main resource to lay out the screen
         setContentView(R.layout.activity_main);
+
+        // Check to see if the App was just paused or if we're starting fresh
+        // If there is a "savedInstanceState", let's resume from where we left off
+        if (savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+        }
 
         // Get a reference to the Question TextView and set its text to the question at the current index
         mQuestionTextView = findViewById(R.id.question_text_view);
@@ -111,6 +119,14 @@ public class MainActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         Log.d(TAG, "onPause has been called!");
+    }
+
+    // let's save the index of the current question so when we rotate or pause our app, it comes back
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i(TAG, "onSaveInstanceState");
+        savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
     }
 
     @Override
