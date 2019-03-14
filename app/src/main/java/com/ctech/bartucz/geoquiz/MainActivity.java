@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         mQuestionTextView = findViewById(R.id.question_text_view);
 
         mTrueButton = findViewById(R.id.true_button);
+
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
