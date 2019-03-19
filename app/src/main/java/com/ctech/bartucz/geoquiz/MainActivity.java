@@ -1,5 +1,6 @@
 package com.ctech.bartucz.geoquiz;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button mTrueButton;
     private Button mFalseButton;
+    private Button mCheatButton;
     private ImageButton mNextButton;
     private ImageButton mPrevButton;
 
@@ -35,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     // the current question being shown
     private int mCurrentIndex = 0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +55,10 @@ public class MainActivity extends AppCompatActivity {
         // Get a reference to the Question TextView and set its text to the question at the current index
         mQuestionTextView = findViewById(R.id.question_text_view);
 
-        mTrueButton = findViewById(R.id.true_button);
 
+
+
+        mTrueButton = findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +71,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkAnswer(false);
+            }
+        });
+
+        mCheatButton = findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start CheatActivity
+                Intent intent1 = new Intent(MainActivity.this, CheatActivity.class);
+                boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+                Intent intent = CheatActivity.newIntent(MainActivity.this, answerIsTrue);
+                startActivity(intent);
             }
         });
 
@@ -103,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
         updateQuestion();
     } // end of onCreate
+
 
     @Override
     public void onStart() {
