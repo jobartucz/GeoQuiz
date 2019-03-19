@@ -1,5 +1,6 @@
 package com.ctech.bartucz.geoquiz;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final String KEY_INDEX = "index";
+    private static final int REQUEST_CODE_CHEAT = 0;
 
     private Button mTrueButton;
     private Button mFalseButton;
@@ -37,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     // the current question being shown
     private int mCurrentIndex = 0;
 
+    // Is this person a cheater?
+    private boolean mIsCheater;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Get a reference to the Question TextView and set its text to the question at the current index
         mQuestionTextView = findViewById(R.id.question_text_view);
-
-
 
 
         mTrueButton = findViewById(R.id.true_button);
@@ -82,7 +85,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent1 = new Intent(MainActivity.this, CheatActivity.class);
                 boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
                 Intent intent = CheatActivity.newIntent(MainActivity.this, answerIsTrue);
+
                 startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_CHEAT);
             }
         });
 
@@ -91,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
+                // reset the cheat flag
+                mIsCheater = false;
 
                 // update the current index, but stay within the length of the array
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
@@ -118,6 +126,21 @@ public class MainActivity extends AppCompatActivity {
 
         updateQuestion();
     } // end of onCreate
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_CHEAT) {
+            if (data == null) { // error checking
+                return;
+            }
+            mIsCheater = CheatActivity.wasAnswerShown(data);
+        }
+
+    }
 
 
     @Override
@@ -171,10 +194,14 @@ public class MainActivity extends AppCompatActivity {
 
         int messageResourceId = 0;
 
-        if (userPressedTrue == answerIsTrue) {
-            messageResourceId = R.string.correct_toast;
+        if (mIsCheater) {
+            messageResourceId = R.string.judgment_toast;
         } else {
-            messageResourceId = R.string.incorrect_toast;
+            if (userPressedTrue == answerIsTrue) {
+                messageResourceId = R.string.correct_toast;
+            } else {
+                messageResourceId = R.string.incorrect_toast;
+            }
         }
 
         // you can make fancier Toast here if you want (from previous challenge)

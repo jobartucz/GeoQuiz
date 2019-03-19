@@ -13,6 +13,9 @@ public class CheatActivity extends AppCompatActivity {
     // This will be the key for passing into the Intent
     private static final String EXTRA_ANSWER_IS_TRUE = "com.ctech.bartucz.geoquiz.answer_is_true";
 
+    // This will be the key for passing extra data back to MainActivity
+    private static final String EXTRA_ANSWER_WAS_SHOWN = "com.ctech.bartucz.geoquiz.answer_was_shown";
+
     private boolean mAnswerIsTrue;
 
     private TextView mAnswerTextView;
@@ -25,6 +28,10 @@ public class CheatActivity extends AppCompatActivity {
         return intent;
     }
 
+    // Provide a method to decode the Intent we create to send back the result
+    public static boolean wasAnswerShown(Intent result) {
+        return result.getBooleanExtra(EXTRA_ANSWER_WAS_SHOWN, false);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +51,14 @@ public class CheatActivity extends AppCompatActivity {
                 } else {
                     mAnswerTextView.setText(R.string.false_button);
                 }
+                setAnswerShownResult(true);
             }
         });
+    }
+
+    private void setAnswerShownResult(boolean isAnswerShown) {
+        Intent toReturn = new Intent();
+        toReturn.putExtra(EXTRA_ANSWER_WAS_SHOWN, isAnswerShown);
+        setResult(RESULT_OK, toReturn);
     }
 }
